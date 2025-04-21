@@ -4,7 +4,6 @@ from tkinter import messagebox, ttk
 from faker import Faker
 import random
 
-# Conexão com o PostgreSQL
 def conectar():
     return psycopg2.connect(
         user="postgres",
@@ -14,7 +13,6 @@ def conectar():
         database="projetonotas"
     )
 
-# Criação da tabela (caso não exista)
 def criar_tabela():
     conn = conectar()
     cur = conn.cursor()
@@ -31,7 +29,7 @@ def criar_tabela():
     conn.close()
 
 
-# Criação da tabela (caso não exista)
+
 def criar_tabela():
     conn = conectar()
     cur = conn.cursor()
@@ -47,7 +45,6 @@ def criar_tabela():
     cur.close()
     conn.close()
 
-# Função para popular com dados aleatórios
 def popular_alunos_fake(qtd=10):
     fake = Faker("pt_BR")
     conn = conectar()
@@ -72,7 +69,7 @@ def popular_alunos_fake(qtd=10):
     listar_alunos()
     messagebox.showinfo("Sucesso", f"{inseridos} alunos fictícios inseridos.")
 
-# Funções CRUD
+# Funções CRUD - tema 5 
 def adicionar_aluno():
     nome = entry_nome.get()
     matricula = entry_matricula.get()
@@ -160,12 +157,11 @@ def limpar_campos():
     entry_matricula.delete(0, tk.END)
     entry_nota.delete(0, tk.END)
 
-# Interface Gráfica
 janela = tk.Tk()
 janela.title("Projeto Sistema de Notas  by Alunos de TI ")
 janela.geometry("900x400")
 
-# Campos
+
 tk.Label(janela, text="Nome:").grid(row=0, column=0, padx=10, pady=5)
 entry_nome = tk.Entry(janela)
 entry_nome.grid(row=0, column=1, padx=10, pady=5)
@@ -178,13 +174,13 @@ tk.Label(janela, text="Nota:").grid(row=2, column=0, padx=10, pady=5)
 entry_nota = tk.Entry(janela)
 entry_nota.grid(row=2, column=1, padx=10, pady=5)
 
-# Botões
+
 tk.Button(janela, text="Adicionar", command=adicionar_aluno).grid(row=0, column=2, padx=10)
 tk.Button(janela, text="Atualizar", command=atualizar_aluno).grid(row=1, column=2, padx=10)
 tk.Button(janela, text="Excluir", command=deletar_aluno).grid(row=2, column=2, padx=10)
 tk.Button(janela, text="Popular aleatório", command=lambda: popular_alunos_fake(10)).grid(row=3, column=2, padx=10, pady=5)
 
-# Lista
+
 tree = ttk.Treeview(janela, columns=("ID", "Nome", "Matrícula", "Nota"), show="headings")
 tree.heading("ID", text="ID")
 tree.heading("Nome", text="Nome")
@@ -193,7 +189,7 @@ tree.heading("Nota", text="Nota")
 tree.bind("<ButtonRelease-1>", preencher_campos)
 tree.grid(row=4, column=0, columnspan=3, padx=10, pady=10)
 
-# Inicialização
+
 criar_tabela()
 listar_alunos()
 janela.mainloop()
